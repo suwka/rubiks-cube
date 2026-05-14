@@ -3,6 +3,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from database import Base, engine
+from models import User, Solve, Algorithm
 
 app = FastAPI(title="CubeTracker API")
 
