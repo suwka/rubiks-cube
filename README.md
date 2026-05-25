@@ -1,7 +1,6 @@
-CubeTracker — README
+CubeTracker
 
-Krótki opis
-- CubeTracker to aplikacja webowa do ćwiczenia i rejestrowania układania kostki Rubika. Zawiera timer ze sposobem uzbrajania (przytrzymaj spację), zapis czasów, kolekcję algorytmów z obrazkami oraz panel administracyjny.
+CubeTracker to aplikacja webowa do ćwiczenia i rejestrowania układania kostki Rubika. Zawiera timer ze sposobem uzbrajania (przytrzymaj spację), zapis czasów, kolekcję algorytmów z obrazkami oraz panel administracyjny.
 
 Główne funkcje (poziom użytkownika)
 - Niezalogowany:
@@ -52,9 +51,8 @@ Ważne pliki
 - backend/schemas.py — DTO
 - frontend/ — aplikacja Angular
 
-Lista screenów (nazwij i wrzuć do repo przed push)
 1. `1_timer.png` — ekran główny: timer armed + running
-2. `2_register.png` — rejestracja + logowanie (pokaż token w localStorage)
+2. `2_register.png` — rejestracja + logowanie
 3. `3_add_solve.png` — dodawanie ułożenia: normal / +2 / DNF
 4. `4_profile.png` — profil użytkownika z `ao5/ao12/best` i `bio`
 5. `5_algs.png` — lista algorytmów i detal z obrazkiem
@@ -66,5 +64,3 @@ Wideo demo (2–3 min) — kolejność ujęć
 2. Rejestracja/logowanie i zapis czasu (30–45 s)
 3. Profil i statystyki (15–30 s)
 4. Panel admina: dodanie algorytmu + upload obrazka (30 s)
-
-Po dodaniu screenów możesz od razu pushować — README gotowe.
