@@ -52,12 +52,26 @@ Ważne pliki
 - frontend/ — aplikacja Angular
 
 1. `1_timer.png` — ekran główny: timer armed + running
+   
+	![Timer](screenshots/1_timer.png)
 2. `2_register.png` — rejestracja + logowanie
+   
+	![Rejestracja i logowanie](screenshots/2_register.png)
 3. `3_add_solve.png` — dodawanie ułożenia: normal / +2 / DNF
+   
+	![Dodawanie ułożenia](screenshots/3_add_solve.png)
 4. `4_profile.png` — profil użytkownika z `ao5/ao12/best` i `bio`
+   
+	![Profil użytkownika](screenshots/4_profile.png)
 5. `5_algs.png` — lista algorytmów i detal z obrazkiem
+   
+	![Lista algorytmów](screenshots/5_algs.png)
 6. `6_admin.png` — panel admina: lista użytkowników, CRUD algorytmów
+   
+	![Panel admina](screenshots/6_admin.png)
 7. `7_tests.png` — wynik `pytest -q` lub fragment logów serwera
+   
+	![Wynik testów](screenshots/7_tests.png)
 
 Wideo demo (2–3 min) — kolejność ujęć
 1. Timer: uzbrajanie i pomiar (1 min)
