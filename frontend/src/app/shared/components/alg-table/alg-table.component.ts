@@ -436,7 +436,7 @@ export class AlgTableComponent implements OnInit {
 		formData.append('moves', this.editForm.value.moves ?? '');
 		formData.append('description', this.editForm.value.description ?? '');
 		if (this.selectedEditFile) {
-			formData.append('image_file', this.selectedEditFile);
+			formData.append('image', this.selectedEditFile);
 		}
 
 		this.saving = true;
@@ -478,7 +478,7 @@ export class AlgTableComponent implements OnInit {
 		formData.append('moves', this.addForm.value.moves ?? '');
 		formData.append('description', this.addForm.value.description ?? '');
 		if (this.selectedAddFile) {
-			formData.append('image_file', this.selectedAddFile);
+			formData.append('image', this.selectedAddFile);
 		}
 
 		this.saving = true;

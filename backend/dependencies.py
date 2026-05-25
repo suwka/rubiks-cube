@@ -1,4 +1,5 @@
 #fastapi zaleznosci
+from types import SimpleNamespace
 from typing import Generator, Optional
 from sqlalchemy.orm import Session
 from fastapi import Depends, HTTPException, status
@@ -34,6 +35,18 @@ def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(
 	return user
 
 
+def get_current_user_fast(token: str = Depends(oauth2_scheme)) -> models.User:
+	"""zwraca minimalnego usera z samego JWT bez pytania do bazy"""
+	payload = decode_token(token)
+	if not payload:
+		raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="nieprawidlowy token")
+	username = payload.get("sub")
+	if not username:
+		raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="nieprawidlowy token")
+	role = payload.get("role") or "user"
+	return SimpleNamespace(username=username, role=role)
+
+
 def get_current_user_optional(token: Optional[str] = Depends(oauth2_scheme), db: Session = Depends(get_db)) -> Optional[models.User]:
 	"""zwraca usera lub None jesli brak tokena/niewazny"""
 	if not token:
@@ -47,7 +60,7 @@ def get_current_user_optional(token: Optional[str] = Depends(oauth2_scheme), db:
 	return db.query(models.User).filter(models.User.username == username).first()
 
 
-def require_admin(current_user: models.User = Depends(get_current_user)) -> models.User:
+def require_admin(current_user: models.User = Depends(get_current_user_fast)) -> models.User:
 	"""sprawdza czy user ma role admin - rzuca 403 jesli nie"""
 	if getattr(current_user, "role", None) != "admin":
 		raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="brak uprawnien")

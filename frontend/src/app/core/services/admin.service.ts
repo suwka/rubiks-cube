@@ -40,14 +40,16 @@ export class AdminService {
   }
 
   changeUserPassword(id: number, newPassword: string, newPasswordConfirm: string): Observable<{ message: string }> {
-    return this.http.put<{ message: string }>(`${environment.apiUrl}/admin/users/${id}/password`, { old_password: '', new_password: newPassword, new_password_confirm: newPasswordConfirm }).pipe(
+    return this.http.put<{ message: string }>(`${environment.apiUrl}/admin/users/${id}/password`, { new_password: newPassword, new_password_confirm: newPasswordConfirm }).pipe(
       catchError((err) => this.handleHttpError(err, 'Nie mozna zmienic hasla uzytkownika'))
     );
   }
 
   private handleHttpError(error: unknown, fallbackMessage: string) {
     if (error instanceof HttpErrorResponse) {
-      return throwError(() => new Error(error.error?.detail ?? fallbackMessage));
+      const detail = error.error?.detail;
+      const message = typeof detail === 'string' ? detail : detail ? JSON.stringify(detail) : fallbackMessage;
+      return throwError(() => new Error(message));
     }
     return throwError(() => new Error(fallbackMessage));
   }

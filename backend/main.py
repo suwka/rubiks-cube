@@ -1,6 +1,8 @@
 #cubetracker api
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+import os
 
 from database import Base, engine, SessionLocal
 from models import User, Solve, Algorithm
@@ -23,6 +25,10 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+static_algs_dir = os.path.join(os.path.dirname(__file__), 'static', 'algs')
+os.makedirs(static_algs_dir, exist_ok=True)
+app.mount('/static', StaticFiles(directory=os.path.join(os.path.dirname(__file__), 'static')), name='static')
 
 @app.on_event("startup")
 def startup():

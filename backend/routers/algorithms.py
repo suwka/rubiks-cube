@@ -52,7 +52,15 @@ def update_algorithm(
     _=Depends(require_admin),
 ):
     try:
-        alg = algorithm_service.update_algorithm(db, algorithm_id, category, name, moves, description, image)
+        alg = algorithm_service.update_algorithm(
+            db=db,
+            alg_id=algorithm_id,
+            category=category,
+            name=name,
+            moves=moves,
+            description=description,
+            image_file=image,
+        )
     except ValueError as e:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
     if not alg:

@@ -95,6 +95,7 @@ def create_algorithm(
 def update_algorithm(
     db: Session,
     alg_id: int,
+    category: Optional[str] = None,
     name: Optional[str] = None,
     moves: Optional[str] = None,
     description: Optional[str] = None,
@@ -105,6 +106,8 @@ def update_algorithm(
     if alg is None:
         return None
 
+    if category is not None:
+        alg.category = category
     if name is not None:
         alg.name = name
     if moves is not None:

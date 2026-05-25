@@ -22,6 +22,11 @@ class PasswordChange(BaseModel):
     new_password_confirm: str
 
 
+class AdminPasswordChange(BaseModel):
+    new_password: str = Field(min_length=8, max_length=128)
+    new_password_confirm: str
+
+
 class UserPublic(BaseModel):
     id: int
     username: str

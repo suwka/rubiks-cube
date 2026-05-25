@@ -8,6 +8,7 @@ import { AuthTokenResponse, LoginCredentials, RegisterData } from '../models/aut
 
 type JwtPayload = {
   sub?: string;
+  user_id?: number;
   role?: 'user' | 'admin';
   exp?: number;
   iat?: number;
@@ -22,13 +23,16 @@ export class AuthService {
     const cachedUser = this.loadCachedUser();
     if (cachedUser) {
       this.currentUser$.next(cachedUser);
-    } else if (localStorage.getItem('token')) {
-      // keep constructor cheap; guards can authorize from JWT immediately
-      queueMicrotask(() => {
-        this.restoreSession().subscribe({
-          error: () => this.logout()
+    } else {
+      const tokenUser = this.buildUserFromToken();
+      if (tokenUser) {
+        this.currentUser$.next(tokenUser);
+        queueMicrotask(() => {
+          this.restoreSession().subscribe({
+            error: () => this.logout()
+          });
         });
-      });
+      }
     }
   }
 
@@ -39,6 +43,11 @@ export class AuthService {
         const payload = this.decodeToken(response.access_token);
         if (!payload?.sub) {
           return throwError(() => new Error('Nieprawidlowy token logowania.'));
+        }
+        const immediateUser = this.buildUserFromPayload(payload);
+        if (immediateUser) {
+          this.currentUser$.next(immediateUser);
+          localStorage.setItem('currentUser', JSON.stringify(immediateUser));
         }
         return this.hydrateCurrentUser();
       }),
@@ -140,6 +149,27 @@ export class AuthService {
     } catch {
       return null;
     }
+  }
+
+  private buildUserFromToken(): User | null {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      return null;
+    }
+
+    return this.buildUserFromPayload(this.decodeToken(token));
+  }
+
+  private buildUserFromPayload(payload: JwtPayload | null): User | null {
+    if (!payload?.sub) {
+      return null;
+    }
+
+    return {
+      id: typeof payload.user_id === 'number' ? payload.user_id : 0,
+      username: payload.sub,
+      role: payload.role ?? 'user'
+    };
   }
 
   private handleHttpError(error: unknown, fallbackMessage: string): Observable<never> {

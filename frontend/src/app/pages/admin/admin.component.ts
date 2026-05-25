@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 
@@ -85,6 +85,7 @@ import { AdminService, AdminStats } from '../../core/services/admin.service';
 export class AdminComponent implements OnInit {
   private readonly adminService = inject(AdminService);
   private readonly router = inject(Router);
+  private readonly cdr = inject(ChangeDetectorRef);
 
   protected stats: AdminStats | null = null;
   protected users: any[] = [];
@@ -102,9 +103,18 @@ export class AdminComponent implements OnInit {
   loadStats(): void {
     this.loadingStats = true;
     this.adminService.getStats().subscribe({
-      next: (s) => (this.stats = s),
-      complete: () => (this.loadingStats = false),
-      error: () => (this.loadingStats = false)
+      next: (s) => {
+        this.stats = s;
+        this.cdr.detectChanges();
+      },
+      complete: () => {
+        this.loadingStats = false;
+        this.cdr.detectChanges();
+      },
+      error: () => {
+        this.loadingStats = false;
+        this.cdr.detectChanges();
+      }
     });
   }
 
@@ -112,12 +122,14 @@ export class AdminComponent implements OnInit {
     this.loadingUsers = true;
     this.adminService.getUsers(this.page, this.limit).subscribe({
       next: (res) => {
-        this.users = res.users || [];
+        this.users = [...(res.users || [])];
         this.hasMore = !!res.has_more;
         this.loadingUsers = false;
+        this.cdr.detectChanges();
       },
       error: () => {
         this.loadingUsers = false;
+        this.cdr.detectChanges();
       }
     });
   }

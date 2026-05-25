@@ -12,8 +12,8 @@ from jose import jwt, JWTError
 pwd_context = CryptContext(schemes=["pbkdf2_sha256"], deprecated="auto")
 SECRET_KEY = os.environ.get("SECRET_KEY")
 if not SECRET_KEY:
-	SECRET_KEY = uuid.uuid4().hex
-	logging.warning("brak SECRET_KEY w env - generuje tymczasowy klucz")
+	SECRET_KEY = "cubetracker-dev-secret-key"
+	logging.warning("brak SECRET_KEY w env - uzywam stalego klucza dev")
 
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60

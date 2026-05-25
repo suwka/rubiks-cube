@@ -3,8 +3,7 @@ from sqlalchemy.orm import Session
 
 from dependencies import get_db, require_admin
 import models
-from schemas import AdminStats, UsersPage, UserAdmin
-from schemas import PasswordChange
+from schemas import AdminStats, AdminPasswordChange, UsersPage, UserAdmin
 from services import admin_cache
 from services import user_service
 
@@ -41,7 +40,7 @@ def delete_user(user_id: int, db: Session = Depends(get_db), _=Depends(require_a
 
 
 @router.put("/users/{user_id}/password")
-def admin_change_password(user_id: int, data: PasswordChange, db: Session = Depends(get_db), _=Depends(require_admin)):
+def admin_change_password(user_id: int, data: AdminPasswordChange, db: Session = Depends(get_db), _=Depends(require_admin)):
     user = db.query(models.User).filter(models.User.id == user_id).first()
     if not user:
         raise HTTPException(status_code=404, detail="user not found")

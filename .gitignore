@@ -1,2 +1,42 @@
-README.md
-ALGS.md
+# Ignore Python bytecode
+__pycache__/
+*.py[cod]
+*.pyc
+
+# Pytest cache
+.pytest_cache/
+backend/.pytest_cache/
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# Distribution / build
+dist/
+build/
+*.egg-info/
+
+# Node
+node_modules/
+frontend/dist/
+
+# IDEs and editors
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Environment variables
+.env
+.env.*
+
+# Logs
+*.log
+
+# Ignore compiled extensions
+*.so
+
+# Keep repository docs tracked (do not ignore README/ALGS)
