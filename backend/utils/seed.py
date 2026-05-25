@@ -27,11 +27,22 @@ def seed_db(db: Session):
     # dodaj proste algorytmy przy pustej tabeli
     if db.query(models.Algorithm).count() == 0:
         samples = [
-            {"category": "pll", "name": "Ua", "moves": "R U' R' U' R U R' F' R U R' U' R' F R"},
-            {"category": "oll", "name": "sune", "moves": "R U R' U R U2 R'"},
-            {"category": "f2l", "name": "basic", "moves": "U R U' R'"},
+            {"category": "f2l", "name": "basic pair insert", "moves": "U R U' R'", "description": "prosty wklad pary do prawego slotu"},
+            {"category": "f2l", "name": "left pair insert", "moves": "U' L' U L", "description": "prosty wklad pary do lewego slotu"},
+            {"category": "f2l", "name": "skip insertion", "moves": "U2 R U R'", "description": "wariant dla gotowej pary"},
+            {"category": "oll", "name": "sune", "moves": "R U R' U R U2 R'", "description": "jeden z najpopularniejszych przypadkow oll"},
+            {"category": "oll", "name": "anti sune", "moves": "R U2 R' U' R U' R'", "description": "odwrocony wariant sune"},
+            {"category": "oll", "name": "cross oll", "moves": "F R U R' U' F'", "description": "prosty przypadek orientacji z krzyzem"},
+            {"category": "pll", "name": "Ua perm", "moves": "R U' R U R U R U' R' U' R2", "description": "cykl krawedzi dla pll"},
+            {"category": "pll", "name": "Ub perm", "moves": "R2 U R U R' U' R' U' R' U R'", "description": "drugi popularny wariant pll"},
+            {"category": "pll", "name": "T perm", "moves": "R U R' U' R' F R2 U' R' U' R U R' F'", "description": "czesty przypadek pll do nauki"},
         ]
         for s in samples:
-            alg = models.Algorithm(category=s["category"], name=s["name"], moves=s["moves"], description=None)
+            alg = models.Algorithm(
+                category=s["category"],
+                name=s["name"],
+                moves=s["moves"],
+                description=s.get("description"),
+            )
             db.add(alg)
         db.commit()
