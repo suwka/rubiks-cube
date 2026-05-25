@@ -5,6 +5,7 @@ from sqlalchemy.orm import Session
 import models
 from auth import hash_password, verify_password
 from schemas import UserCreate, UserUpdate, PasswordChange
+from services import admin_cache
 
 
 def create_user(db: Session, data: UserCreate) -> models.User:
@@ -30,6 +31,7 @@ def create_user(db: Session, data: UserCreate) -> models.User:
     db.add(user)
     db.commit()
     db.refresh(user)
+    admin_cache.rebuild_users_cache(db)
     return user
 
 
@@ -66,6 +68,7 @@ def update_user_profile(db: Session, user: models.User, data: UserUpdate) -> mod
         db.add(user)
         db.commit()
         db.refresh(user)
+        # profile changes do not affect admin list contents
     return user
 
 
@@ -81,6 +84,14 @@ def change_password(db: Session, user: models.User, data: PasswordChange) -> Non
     if data.new_password != data.new_password_confirm:
         raise ValueError("nowe haslo i potwierdzenie sie nie zgadzaja")
     user.password_hash = hash_password(data.new_password)
+    db.add(user)
+    db.commit()
+    return None
+
+
+def admin_reset_password(db: Session, user: models.User, new_password: str) -> None:
+    """Forcefully set a new password for a user (admin action)."""
+    user.password_hash = hash_password(new_password)
     db.add(user)
     db.commit()
     return None

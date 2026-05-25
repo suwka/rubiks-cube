@@ -93,7 +93,7 @@ class LoginResponse(BaseModel):
 #admin schematy
 class UsersPage(BaseModel):
     users: list[UserAdmin]
-    total: int
+    has_more: bool
 
 
 class AdminStats(BaseModel):

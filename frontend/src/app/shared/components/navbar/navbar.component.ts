@@ -1,6 +1,6 @@
 import { AsyncPipe, NgIf } from '@angular/common';
 import { Component } from '@angular/core';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { map } from 'rxjs';
 
 import { AuthService } from '../../../core/services/auth.service';
@@ -28,6 +28,7 @@ import { AuthService } from '../../../core/services/auth.service';
           <div class="menu" *ngIf="menuOpen">
             <a [routerLink]="['/user', user.id]" (click)="menuOpen = false">Mój profil</a>
             <a routerLink="/settings" (click)="menuOpen = false">Ustawienia</a>
+            <a routerLink="/admin" *ngIf="user.role === 'admin'" (click)="menuOpen = false">Admin</a>
             <button type="button" (click)="logout()">Wyloguj</button>
           </div>
         </div>
@@ -65,10 +66,11 @@ import { AuthService } from '../../../core/services/auth.service';
 export class NavbarComponent {
   menuOpen = false;
 
-  constructor(protected readonly auth: AuthService) {}
+  constructor(protected readonly auth: AuthService, private readonly router: Router) {}
 
   logout(): void {
     this.menuOpen = false;
     this.auth.logout();
+    this.router.navigate(['/main']);
   }
 }

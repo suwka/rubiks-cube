@@ -9,7 +9,7 @@ from passlib.context import CryptContext
 from jose import jwt, JWTError
 
 # konfiguracja
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+pwd_context = CryptContext(schemes=["pbkdf2_sha256"], deprecated="auto")
 SECRET_KEY = os.environ.get("SECRET_KEY")
 if not SECRET_KEY:
 	SECRET_KEY = uuid.uuid4().hex

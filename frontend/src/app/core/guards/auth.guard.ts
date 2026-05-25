@@ -16,6 +16,12 @@ export const authGuard: CanActivateFn = () => {
     return of(true);
   }
 
+  const tokenPayload = authService.getTokenPayload();
+  const now = Math.floor(Date.now() / 1000);
+  if (tokenPayload?.sub && (!tokenPayload.exp || tokenPayload.exp > now)) {
+    return of(true);
+  }
+
   return authService.restoreSession().pipe(
     map(() => true),
     catchError(() => of(router.createUrlTree(['/login'])))

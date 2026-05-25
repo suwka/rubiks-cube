@@ -192,6 +192,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     event.preventDefault();
 
     if (this.state === 'idle' || this.state === 'stopped') {
+      // Immediate arm on single press: set ready state instantly
       this.beginHold();
     }
   }
@@ -203,11 +204,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
 
     event.preventDefault();
-
-    if (this.state === 'holding') {
-      this.cancelHold();
-      return;
-    }
 
     if (this.state === 'ready') {
       this.startRunning();
@@ -286,15 +282,10 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   private beginHold(): void {
+    // Immediate ready state (no long-hold required)
     this.clearHoldTimer();
-    this.state = 'holding';
+    this.state = 'ready';
     this.cdr.detectChanges();
-    this.holdTimeoutId = setTimeout(() => {
-      if (this.state === 'holding') {
-        this.state = 'ready';
-        this.cdr.detectChanges();
-      }
-    }, 500);
   }
 
   private cancelHold(): void {

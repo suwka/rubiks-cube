@@ -17,6 +17,12 @@ export const adminGuard: CanActivateFn = () => {
     return of(currentUser.role === 'admin' ? true : router.createUrlTree(['/main']));
   }
 
+  const tokenPayload = authService.getTokenPayload();
+  const now = Math.floor(Date.now() / 1000);
+  if (tokenPayload?.role && (!tokenPayload.exp || tokenPayload.exp > now)) {
+    return of(tokenPayload.role === 'admin' ? true : router.createUrlTree(['/main']));
+  }
+
   return authService.restoreSession().pipe(
     map((user) => (user.role === 'admin' ? true : router.createUrlTree(['/main']))),
     catchError(() => of(router.createUrlTree(['/main'])))

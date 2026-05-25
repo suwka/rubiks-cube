@@ -19,9 +19,15 @@ export class AuthService {
   readonly isLoggedIn$ = this.currentUser$.pipe(map((user) => Boolean(user)));
 
   constructor(private readonly http: HttpClient) {
-    if (localStorage.getItem('token')) {
-      this.restoreSession().subscribe({
-        error: () => this.logout()
+    const cachedUser = this.loadCachedUser();
+    if (cachedUser) {
+      this.currentUser$.next(cachedUser);
+    } else if (localStorage.getItem('token')) {
+      // keep constructor cheap; guards can authorize from JWT immediately
+      queueMicrotask(() => {
+        this.restoreSession().subscribe({
+          error: () => this.logout()
+        });
       });
     }
   }
@@ -49,6 +55,7 @@ export class AuthService {
 
   logout(): void {
     localStorage.removeItem('token');
+    localStorage.removeItem('currentUser');
     this.currentUser$.next(null);
   }
 
@@ -76,9 +83,20 @@ export class AuthService {
 
     return this.http.get<Record<string, unknown>>(`${environment.apiUrl}/auth/me`).pipe(
       map((user) => this.mapBackendUser(user)),
-      tap((user) => this.currentUser$.next(user)),
+      tap((user) => {
+        this.currentUser$.next(user);
+        localStorage.setItem('currentUser', JSON.stringify(user));
+      }),
       catchError((error) => this.handleHttpError(error, 'Nie mozna odtworzyc sesji.'))
     );
+  }
+
+  getTokenPayload(): JwtPayload | null {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      return null;
+    }
+    return this.decodeToken(token);
   }
 
   private mapBackendUser(user: Record<string, unknown>): User {
@@ -106,6 +124,19 @@ export class AuthService {
       const normalized = payloadBase64.replace(/-/g, '+').replace(/_/g, '/');
       const json = atob(normalized.padEnd(normalized.length + ((4 - (normalized.length % 4)) % 4), '='));
       return JSON.parse(json) as JwtPayload;
+    } catch {
+      return null;
+    }
+  }
+
+  private loadCachedUser(): User | null {
+    const raw = localStorage.getItem('currentUser');
+    if (!raw) {
+      return null;
+    }
+
+    try {
+      return JSON.parse(raw) as User;
     } catch {
       return null;
     }

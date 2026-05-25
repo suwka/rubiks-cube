@@ -11,7 +11,8 @@
 html, body {
 	margin: 0;
 	min-height: 100%;
-	font-family: 'Rajdhani', Arial, Helvetica, sans-serif;
+	/* prefer custom F1 font if available, fall back to Rajdhani and system fonts */
+	font-family: 'F1', 'Rajdhani', Arial, Helvetica, sans-serif;
 	background:
 		radial-gradient(circle at top, rgba(168, 85, 247, .08), transparent 30%),
 		linear-gradient(180deg, #f8f7fc 0%, #f1eef9 100%);
@@ -30,5 +31,66 @@ button, input, select, textarea {
 .container {
 	width: min(1200px, calc(100% - 2rem));
 	margin: 0 auto;
+}
+
+/* Unified action button style used across settings/login/register */
+.app-action-button {
+	padding: 10px 16px;
+	border-radius: 10px;
+	border: 0;
+	background: #111827;
+	color: #fff;
+	font-weight: 600;
+	cursor: pointer;
+	font-size: 14px;
+	width: 160px;
+	text-align: center;
+	display: inline-block;
+}
+.app-action-button:disabled {
+	opacity: 0.5;
+	cursor: not-allowed;
+}
+
+/* Settings layout */
+.settings-main {
+	max-width: 820px;
+	margin: 36px auto;
+	padding: 28px 22px;
+	border-radius: 12px;
+	background: rgba(255,255,255,0.9);
+	box-shadow: 0 8px 30px rgba(10,15,25,0.06);
+	font-family: inherit;
+}
+.settings-header {
+	display:flex;
+	justify-content:space-between;
+	align-items:center;
+	margin-bottom:18px;
+}
+.settings-cards {
+	display: flex;
+	flex-direction: column;
+	gap: 18px;
+}
+.settings-card {
+	padding: 14px;
+	border-radius: 10px;
+	background: #fff;
+	/* removed border to match requested look */
+	display:flex;
+	flex-direction:column;
+	gap:10px;
+}
+.card-title {
+	font-size:15px;
+	font-weight:600;
+	margin:0 0 6px 0;
+	color:#263238;
+}
+.settings-card .card-actions {
+	display:flex;
+	gap:10px;
+	align-items:center;
 }
 

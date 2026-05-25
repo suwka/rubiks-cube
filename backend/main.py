@@ -10,13 +10,15 @@ from routers import solves as solves_router
 from routers import algorithms as algorithms_router
 from routers import admin as admin_router
 from utils.seed import seed_db
+from services import admin_cache
 from routers import algorithms as algorithms_router
 
 app = FastAPI(title="CubeTracker API")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:4200"],
+    allow_origins=[],
+    allow_origin_regex=r"http://localhost(:[0-9]+)?",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -29,6 +31,7 @@ def startup():
     db = SessionLocal()
     try:
         seed_db(db)
+        admin_cache.rebuild_users_cache(db)
     finally:
         db.close()
     print("baza danych zainicjalizowana")
