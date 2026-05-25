@@ -2,6 +2,8 @@ CubeTracker
 
 CubeTracker to aplikacja webowa do ćwiczenia i rejestrowania układania kostki Rubika. Zawiera timer ze sposobem uzbrajania (przytrzymaj spację), zapis czasów, kolekcję algorytmów z obrazkami oraz panel administracyjny.
 
+Środowisko: Backend - Python (FastAPI), Frontend - Angular + TypeScript, Baza danych - SQLite.
+
 Główne funkcje (poziom użytkownika)
 - Niezalogowany:
 	- losowy scramble, timer (przytrzymaj spację → puść = start; zatrzymaj spacją), przegląd algorytmów (metoda zaawansowana podzielona na 4 sekcje, 3 z opisami)
