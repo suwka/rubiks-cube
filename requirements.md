@@ -29,12 +29,4 @@ Ocena 5.0 (Bardzo dobry)
 - Czysty kod: czytelna organizacja, nazwy, brak duplications, separacja warstw.
   - Przykład: modularna struktura `models` / `services` / `routers` i czytelne schematy.
 - Frontend: prosta aplikacja Angular konsumująca API i prezentująca podstawowe widoki.
-  - Przykład: aplikacja w folderze [frontend](frontend) korzystająca z endpointów API.
-
-Wymagania formalne
-- Demo video 2–3 min: krótki film pokazujący krytyczne scenariusze (timer, rejestracja, zapis czasu, panel admina).
-  - Przykład: dołączyć link do wideo w README (`README.md`).
-- Link do repozytorium GitHub: publiczny URL do projektu.
-  - Przykład: dodać URL repo do sekcji „Repozytorium” w README.
-- Dokumentacja uruchomienia (README.md): krok po kroku uruchomienie backendu i frontendu.
-  - Przykład: instrukcja uruchomienia w [README.md](README.md#L1).
+  - Przykład: aplikacja w folderze [frontend](frontend) korzystająca z endpointów API
