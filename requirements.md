@@ -38,5 +38,3 @@ Wymagania formalne
   - Przykład: dodać URL repo do sekcji „Repozytorium” w README.
 - Dokumentacja uruchomienia (README.md): krok po kroku uruchomienie backendu i frontendu.
   - Przykład: instrukcja uruchomienia w [README.md](README.md#L1).
-
-Podsumowanie: projekt spełnia kryteria 5.0 technicznie (FastAPI zamiast Spring Boot — jeśli wymóg to konkretna technologia, trzeba przepisać backend). Formalnie wymagane jest dołączenie krótkiego wideo i/lub linku do GitHub w README.
